@@ -12,7 +12,7 @@ library(xtable)
 
 rm(list = ls())
 
-source('sas_v4.R')
+source('sas_mt.R')
 
 ninter = 22
 n1 = 11

@@ -19,7 +19,7 @@ post_sas = function(response, activity, N, ninter, p0, mu1_h0, a0, mu2_h0, n.ada
   }
   ss10 = as.numeric(rowMeans(response) > p0 + 0.2)
   ss20 = as.numeric(rowMeans(activity) > a0 + 0.2)
-  thismodel = try(jags.model(file = "bugs/sas_binary/sas_v4.txt", 
+  thismodel = try(jags.model(file = "bugs/sas_binary/sas.txt", 
                              data = dat, 
                              inits = list(Z = Z,
                                           diff1 = 1,
