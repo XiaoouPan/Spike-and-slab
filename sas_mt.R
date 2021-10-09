@@ -1,12 +1,10 @@
-post_sas = function(response, activity, N, ninter, p0, mu1_h0, a0, mu2_h0, n.adapt = 5000, n.burn = 5000, n.iter = 10000) {
+### Multiple testing with spike and slab priors on censored data
+
+post_sas = function(Y, n, p, mu1_h0, mu2_h0, n.adapt = 5000, n.burn = 5000, n.iter = 10000) {
   p1 = 0.25 + 0.5 * as.numeric(rowMeans(response) > p0 + 0.15)
-  p2 = 0.25 + 0.5 * as.numeric(rowMeans(activity) > a0 + 0.15)
-  dat = list(response = response,
-             activity = activity,
-             N = N,
-             ninter = ninter,
-             p1 = p1,
-             p2 = p2,
+  dat = list(Y = Y,
+             n = n,
+             p = p,
              mu1_h0 = mu1_h0, 
              mu2_h0 = mu2_h0)
   Z = array(0, dim = c(N, ninter, 2))
@@ -26,7 +24,6 @@ post_sas = function(response, activity, N, ninter, p0, mu1_h0, a0, mu2_h0, n.ada
                                           diff2 = 1,
                                           ss1 = ss10,
                                           ss2 = ss20,
-                                          rho = rep(0.5, dat$N),
                                           tau1 = 0.001,
                                           tau2 = 0.001),
                              n.adapt = n.adapt, quiet = TRUE), silent = TRUE)
