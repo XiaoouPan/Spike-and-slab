@@ -1,23 +1,12 @@
 ### Multiple testing with spike and slab priors on censored data
 
-post_sas = function(Y, n, p, mu1_h0, mu2_h0, n.adapt = 5000, n.burn = 5000, n.iter = 10000) {
+post_sas = function(Y, n, p, mu_h0, n.adapt = 5000, n.burn = 5000, n.iter = 10000) {
   p1 = 0.25 + 0.5 * as.numeric(rowMeans(response) > p0 + 0.15)
   dat = list(Y = Y,
              n = n,
              p = p,
-             mu1_h0 = mu1_h0, 
-             mu2_h0 = mu2_h0)
-  Z = array(0, dim = c(N, ninter, 2))
-  for (i in 1:N) {
-    Z[i, , ] = mvrnorm(ninter, c(mu1_h0[i], mu2_h0[i]), matrix(c(1, 0.5, 0.5, 1), 2, 2))
-    for (j in 1:ninter) {
-      Z[i, j, 1] = ifelse(dat$response[i, j] == 1, abs(Z[i, j, 1]), -abs(Z[i, j, 1]))
-      Z[i, j, 2] = ifelse(dat$activity[i, j] == 1, abs(Z[i, j, 2]), -abs(Z[i, j, 2]))
-    }
-  }
-  ss10 = as.numeric(rowMeans(response) > p0 + 0.2)
-  ss20 = as.numeric(rowMeans(activity) > a0 + 0.2)
-  thismodel = try(jags.model(file = "bugs/sas_binary/sas.txt", 
+             mu_h0 = mu_h0)
+  thismodel = try(jags.model(file = "bugs/sas.txt", 
                              data = dat, 
                              inits = list(Z = Z,
                                           diff1 = 1,
